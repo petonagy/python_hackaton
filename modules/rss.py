@@ -23,10 +23,10 @@ class AbstractRssParser(ABC):
 
 class SmeParser(AbstractRssParser):
     def __init__(self, source: SourceSite):
-        super(SmeParser, self).__init__(source)
+        super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.source.url)
+        doc = feedparser.parse(self.source.rss_url)
         entries = doc['entries']
         res = []
         for entry in entries:
@@ -40,10 +40,10 @@ class SmeParser(AbstractRssParser):
 
 class PravdaParser(AbstractRssParser):
     def __init__(self, source: SourceSite):
-        super(PravdaParser, self).__init__(source)
+        super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.source.url)
+        doc = feedparser.parse(self.source.rss_url)
         entries = doc['entries']
         res = []
         for entry in entries:
@@ -60,7 +60,7 @@ class AktualityParser(AbstractRssParser):
         super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.source.url)
+        doc = feedparser.parse(self.source.rss_url)
         entries = doc['entries']
         res = []
         for entry in entries:
@@ -89,7 +89,7 @@ class ParserFactory(object):
 if __name__ == '__main__':
     _sources = []
     for _source, _data in Sources.FEEDS.items():
-        _sources.append(SourceSite(_source, _data.get('name', ''), _data['url']))
+        _sources.append(SourceSite(_source, _data.get('name', ''), _data['rss_url'], _data.get('base_url', '')))
 
     _parsers = ParserFactory.get_parsers(_sources)
     for _s, _parser in _parsers.items():

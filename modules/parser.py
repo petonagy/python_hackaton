@@ -23,7 +23,7 @@ class Parser(object):
 if __name__ == '__main__':
     sources = []
     for source, data in Sources.FEEDS.items():
-        sources.append(SourceSite(source, data.get('name', ''), data['url']))
+        sources.append(SourceSite(source, data.get('name', ''), data['rss_url'], data.get('base_url', '')))
 
     parsers = ParserFactory.get_parsers(sources)
 
