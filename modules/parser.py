@@ -1,17 +1,20 @@
 import requests
 from lxml import html
+from modules.rss import RssArticle
+from modules.rss import SmeParser
+from modules.rss import RssSources
 
 from modules.utils import StringUtils
 
 
 class Parser(object):
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, article: RssArticle):
+        self.url = article.url
 
-    def get_document(self):
+    def get_document(self) -> str:
         return requests.get(self.url).content
 
-    def get_keywords(self):
+    def get_keywords(self) -> list:
         tree = html.fromstring(self.get_document())
         keywords = tree.xpath('/html/head/meta[@name="keywords"]/@content')
 
@@ -19,6 +22,7 @@ class Parser(object):
 
 
 if __name__ == '__main__':
-    parser = Parser('http://s.sme.sk/r-rss/20557963/svet.sme.sk/syria-ani-irak-nie-su-statmi-su-to-uzemia-na-ktorych-sa-da-zbohatnut.html')
+    parser = SmeParser(RssSources.FEEDS['sme'])
+    parser = Parser(SmeParser.parse()[0])
     print(parser.get_keywords())
 
