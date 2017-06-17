@@ -21,7 +21,7 @@ class Sources(object):
             KEY_PARSER: 'AktualityParser',
             KEY_BASE_URL: 'https://www.aktuality.sk',
             KEY_NAME: 'Aktuality',
-        }
+        },
     }
 
 
