@@ -4,6 +4,8 @@ from modules.config import SourceSite
 from modules.rss import ParserFactory
 from modules.rss_model import RssArticle
 from modules.utils import StringUtils
+from modules.utils import ListUtils
+from modules.parser import Parser
 
 
 class MetaArticle(object):
@@ -29,7 +31,7 @@ class MetaArticleFactory(object):
         return MetaArticle(
             StringUtils.to_low_encoded_list(a.title),
             a.url,
-            a.keywords,
+            ListUtils.to_low_encoded_list(a.keywords),
             StringUtils.to_low_encoded_list(a.perex),
             a.body,
             a.source
@@ -44,5 +46,11 @@ class Collector(object):
     def collect(self) -> Dict[SourceSite, List[MetaArticle]]:
         res = {}
         for source, parser in self.parsers.items():
-            res[source] = [MetaArticleFactory.from_rss_article(rss_article) for rss_article in parser.parse()]
+            articles = []
+            for rss_article in parser.parse():
+                meta_article = MetaArticleFactory.from_rss_article(rss_article)
+                html_parser = Parser(rss_article)
+                meta_article.keywords += html_parser.get_keywords()
+                articles.append(meta_article)
+            res[source] = articles
         return res
