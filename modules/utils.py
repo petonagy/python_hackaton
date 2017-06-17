@@ -2,6 +2,7 @@ from typing import List
 from unidecode import unidecode
 import re
 
+
 class StringUtils(object):
     @staticmethod
     def to_low_encoded_list(s: str) -> List[str]:
