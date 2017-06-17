@@ -73,17 +73,15 @@ class Collector(object):
                 keywords.append(t.result)
                 rss.append(t.rss)
 
-
             for i, rss_article in enumerate(parsed_articles):
                 meta_article = MetaArticleFactory.from_rss_article(rss_article)
 
+                # Match the right keywords for right article
                 for i, rs in enumerate(rss):
-                        if rs == rss_article:
-                            meta_article.keywords += keywords[i]
+                    if rs == rss_article:
+                        meta_article.keywords += keywords[i]
 
                 articles.append(meta_article)
-                # print(meta_article)
-                # print('\n')
             res[source] = articles
 
         return res
