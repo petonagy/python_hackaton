@@ -47,11 +47,27 @@ class PravdaParser(AbstractRssParser):
         entries = doc['entries']
         res = []
         for entry in entries:
-            print(entry)
             title = entry.get('title', '')
             url = entry.get('link', '')
             keywords = entry.get('keywords', [])
             perex = entry.get('summary', '')
+            res.append(RssArticle(title, url, keywords, perex, '', self.source))
+        return res
+
+
+class AktualityParser(AbstractRssParser):
+    def __init__(self, source: SourceSite):
+        super().__init__(source)
+
+    def parse(self) -> List[RssArticle]:
+        doc = feedparser.parse(self.source.url)
+        entries = doc['entries']
+        res = []
+        for entry in entries:
+            title = entry.get('title', '')
+            url = entry.get('link', '')
+            keywords = entry.get('keywords', [])
+            perex = entry.get('description', '')
             res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
 

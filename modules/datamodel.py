@@ -20,12 +20,15 @@ class Collector(object):
 
 class MetaArticle(object):
     """ Meta representation of an article, in which all key fields are parsed to lowercase strings without accents. """
-    def __init__(self, title: List[str], url: str, keywords: List[str], perex: List[str], body: str):
+
+    def __init__(self, title: List[str], url: str, keywords: List[str], perex: List[str], body: str,
+                 source: SourceSite):
         self.title = title
         self.url = url
         self.keywords = keywords
         self.perex = perex
         self.body = body
+        self.source = source
 
 
 class MetaArticleFactory(object):
