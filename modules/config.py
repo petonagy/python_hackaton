@@ -7,15 +7,15 @@ class Sources(object):
             'name': 'Sme',
         },
         'pravda': {
-            'rss_url': 'https://spravy.pravda.sk/rss/xml/',
+            'rss_url': 'http://spravy.pravda.sk/rss/xml/',
             'parser': 'PravdaParser',
             'base_url': 'http://www.pravda.sk',
             'name': 'Pravda',
         },
         'aktuality': {
-            'rss_url': 'https://www.aktuality.sk/rss/',
+            'rss_url': 'http://www.aktuality.sk/rss/',
             'parser': 'AktualityParser',
-            'base_url': 'https://www.aktuality.sk',
+            'base_url': 'http://www.aktuality.sk',
             'name': 'Aktuality',
         }
     }
