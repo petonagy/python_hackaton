@@ -12,6 +12,8 @@ from modules.rss_model import RssArticle
 
 
 class AbstractRssParser(ABC):
+    KEY_KEYWORD = 'keywords'
+
     def __init__(self, source: SourceSite):
         self.source = source
         if hasattr(ssl, '_create_unverified_context'):
@@ -19,27 +21,29 @@ class AbstractRssParser(ABC):
 
     @abstractmethod
     def parse(self) -> List[RssArticle]:
-        pass
-
-    def __repr__(self):
-        return 'RSS Parser for %s' % self.source.name
-
-
-class SmeParser(AbstractRssParser):
-    def __init__(self, source: SourceSite):
-        super().__init__(source)
-
-    def parse(self) -> List[RssArticle]:
         doc = feedparser.parse(self.source.rss_url)
         entries = doc['entries']
         res = []
         for entry in entries:
             title = entry.get('title', '')
             url = entry.get('link', '')
-            keywords = entry.get('tags', [])
-            perex = entry.get('summary', '')
+            keywords = entry.get(self.KEY_KEYWORD, [])
+            perex = BeautifulSoup(entry.get('description', ''), 'lxml').text.strip()
             res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
+
+    def __repr__(self):
+        return 'RSS Parser for %s' % self.source.name
+
+
+class SmeParser(AbstractRssParser):
+    KEY_KEYWORD = 'tags'
+
+    def __init__(self, source: SourceSite):
+        super().__init__(source)
+
+    def parse(self) -> List[RssArticle]:
+        return super().parse()
 
 
 class PravdaParser(AbstractRssParser):
@@ -47,16 +51,7 @@ class PravdaParser(AbstractRssParser):
         super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.source.rss_url)
-        entries = doc['entries']
-        res = []
-        for entry in entries:
-            title = entry.get('title', '')
-            url = entry.get('link', '')
-            keywords = entry.get('keywords', [])
-            perex = entry.get('summary', '')
-            res.append(RssArticle(title, url, keywords, perex, '', self.source))
-        return res
+        return super().parse()
 
 
 class AktualityParser(AbstractRssParser):
@@ -64,16 +59,7 @@ class AktualityParser(AbstractRssParser):
         super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.source.rss_url)
-        entries = doc['entries']
-        res = []
-        for entry in entries:
-            title = entry.get('title', '')
-            url = entry.get('link', '')
-            keywords = entry.get('keywords', [])
-            perex = BeautifulSoup(entry.get('description', ''), 'lxml').text.strip()
-            res.append(RssArticle(title, url, keywords, perex, '', self.source))
-        return res
+        return super().parse()
 
 
 class ParserFactory(object):
