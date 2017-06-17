@@ -4,6 +4,18 @@ from lxml import html
 from modules.config import SourceSite
 from modules.rss import ParserFactory, RssArticle, Sources
 from modules.utils import ListUtils
+import threading
+
+
+class MyThread(threading.Thread):
+    def __init__(self, obj):
+        super().__init__()
+        self.obj = obj
+        self.result = None
+
+    def run(self):
+        self.result = self.obj.get_keywords()
+        return
 
 
 class Parser(object):
