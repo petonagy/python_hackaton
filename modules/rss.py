@@ -1,4 +1,5 @@
 import importlib
+import ssl
 from abc import ABC, abstractmethod
 from pprint import pprint
 from typing import Dict, List
@@ -12,6 +13,8 @@ from modules.rss_model import RssArticle
 class AbstractRssParser(ABC):
     def __init__(self, source: SourceSite):
         self.source = source
+        if hasattr(ssl, '_create_unverified_context'):
+            ssl._create_default_https_context = ssl._create_unverified_context
 
     @abstractmethod
     def parse(self) -> List[RssArticle]:
