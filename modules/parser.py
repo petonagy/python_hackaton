@@ -1,6 +1,7 @@
 import requests
-from unidecode import unidecode
 from lxml import html
+
+from modules.utils import StringUtils
 
 
 class Parser(object):
@@ -12,10 +13,9 @@ class Parser(object):
 
     def get_keywords(self):
         tree = html.fromstring(self.get_document())
-
         keywords = tree.xpath('/html/head/meta[@name="keywords"]/@content')
 
-        return [unidecode(keyword.lower()) for keyword in keywords]
+        return StringUtils.to_low_encoded_list(keywords)
 
 
 if __name__ == '__main__':
