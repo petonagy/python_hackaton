@@ -71,7 +71,7 @@ class AktualityParser(AbstractRssParser):
             title = entry.get('title', '')
             url = entry.get('link', '')
             keywords = entry.get('keywords', [])
-            perex = BeautifulSoup(entry.get('description', '')).text.strip()
+            perex = BeautifulSoup(entry.get('description', ''), 'lxml').text.strip()
             res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
 
