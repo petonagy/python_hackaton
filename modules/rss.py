@@ -12,6 +12,10 @@ class RssArticle(object):
         self.perex = perex
         self.body = body
 
+    def __repr__(self):
+        return 'Title: %s\nUrl: %s\nKeywords: %s\nPerex: %s\nBody: %s\n' \
+               % (self.title, self.url, self.keywords, self.perex, self.body)
+
 
 class SmeParser(object):
     def __init__(self, url: str):
@@ -20,10 +24,16 @@ class SmeParser(object):
     def parse(self) -> List[RssArticle]:
         doc = feedparser.parse(self.url)
         entries = doc['entries']
-        pprint(entries)
-        return []
+        res = []
+        for entry in entries:
+            title = entry.get('title', '')
+            url = entry.get('link', '')
+            keywords = entry.get('tags', [])
+            perex = entry.get('summary', '')
+            res.append(RssArticle(title, url, keywords, perex, ''))
+        return res
 
 
 if __name__ == '__main__':
     parser = SmeParser(RssSources.FEEDS['sme'])
-    parser.parse()
+    pprint(parser.parse())
