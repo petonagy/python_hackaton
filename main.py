@@ -2,6 +2,7 @@ from pprint import pprint
 
 from modules.config import SourceSite, Sources
 from modules.rss import ParserFactory
+from modules.datamodel import Collector
 
 if __name__ == '__main__':
     sources = []
@@ -13,3 +14,6 @@ if __name__ == '__main__':
     parsers = ParserFactory.get_parsers(sources)
 
     pprint(parsers)
+
+    col = Collector(sources)
+    pprint(col.collect())

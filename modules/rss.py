@@ -1,7 +1,7 @@
 import importlib
-from abc import ABCMeta
+from abc import ABC, abstractmethod
 from pprint import pprint
-from typing import List, Dict
+from typing import Dict, List
 
 import feedparser
 
@@ -9,10 +9,11 @@ from modules.config import SourceSite, Sources
 from modules.rss_model import RssArticle
 
 
-class AbstractRssParser(metaclass=ABCMeta):
+class AbstractRssParser(ABC):
     def __init__(self, source: SourceSite):
         self.source = source
 
+    @abstractmethod
     def parse(self) -> List[RssArticle]:
         pass
 
@@ -22,7 +23,7 @@ class AbstractRssParser(metaclass=ABCMeta):
 
 class SmeParser(AbstractRssParser):
     def __init__(self, source: SourceSite):
-        super().__init__(source)
+        super(SmeParser, self).__init__(source)
 
     def parse(self) -> List[RssArticle]:
         doc = feedparser.parse(self.source.url)
@@ -39,7 +40,7 @@ class SmeParser(AbstractRssParser):
 
 class PravdaParser(AbstractRssParser):
     def __init__(self, source: SourceSite):
-        super().__init__(source)
+        super(PravdaParser, self).__init__(source)
 
     def parse(self) -> List[RssArticle]:
         doc = feedparser.parse(self.source.url)
@@ -70,6 +71,10 @@ class ParserFactory(object):
 
 
 if __name__ == '__main__':
-    parsers = ParserFactory.get_parsers()
-    for parser in parsers:
-        pprint(parser.parse())
+    _sources = []
+    for _source, _data in Sources.FEEDS.items():
+        _sources.append(SourceSite(_source, _data.get('name', ''), _data['url']))
+
+    _parsers = ParserFactory.get_parsers(_sources)
+    for _s, _parser in _parsers.items():
+        pprint(_parser.parse())

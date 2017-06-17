@@ -14,13 +14,12 @@ class Collector(object):
     def collect(self) -> Dict[SourceSite, List[MetaArticle]]:
         res = {}
         for source, parser in self.parsers.items():
-            pass
+            res[source] = [MetaArticleFactory.from_rss_article(rss_article) for rss_article in parser.parse()]
         return res
 
 
 class MetaArticle(object):
-    """ Meta representation of an article, in which all key fields are parsed to lowercase strings without accents.
-    """
+    """ Meta representation of an article, in which all key fields are parsed to lowercase strings without accents. """
     def __init__(self, title: List[str], url: str, keywords: List[str], perex: List[str], body: str):
         self.title = title
         self.url = url

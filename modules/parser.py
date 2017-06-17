@@ -1,7 +1,8 @@
 import requests
 from lxml import html
 
-from modules.rss import RssArticle, Sources, SmeParser
+from modules.config import SourceSite
+from modules.rss import ParserFactory, RssArticle, Sources
 from modules.utils import StringUtils
 
 
@@ -20,7 +21,13 @@ class Parser(object):
 
 
 if __name__ == '__main__':
-    sme_parser = SmeParser(Sources.FEEDS['sme']['url'])
-    parser = Parser(sme_parser.parse()[0])
-    print(parser.get_keywords())
+    sources = []
+    for source, data in Sources.FEEDS.items():
+        sources.append(SourceSite(source, data.get('name', ''), data['url']))
+
+    parsers = ParserFactory.get_parsers(sources)
+
+    for source, parser in parsers.items():
+        html_parser = Parser(parser.parse()[0])
+        print(html_parser.get_keywords())
 
