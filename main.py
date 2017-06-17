@@ -7,7 +7,7 @@ from modules.datamodel import Collector
 if __name__ == '__main__':
     sources = []
     for source, data in Sources.FEEDS.items():
-        sources.append(SourceSite(source, data.get('name', ''), data['rss_url'], data.get('base_url', '')))
+        sources.append(SourceSite(source, data.get(Sources.KEY_NAME, ''), data[Sources.KEY_RSS_URL], data.get(Sources.KEY_BASE_URL, '')))
 
     pprint(sources)
 

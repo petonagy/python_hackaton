@@ -1,22 +1,26 @@
 class Sources(object):
+    KEY_RSS_URL = 'rss_url'
+    KEY_PARSER = 'parser'
+    KEY_BASE_URL = 'base_url'
+    KEY_NAME = 'name'
     FEEDS = {
         'sme': {
-            'rss_url': 'http://rss.sme.sk/rss/rss.asp?id=frontpage',
-            'parser': 'SmeParser',
-            'base_url': 'http://www.sme.sk',
-            'name': 'Sme',
+            KEY_RSS_URL: 'http://rss.sme.sk/rss/rss.asp?id=frontpage',
+            KEY_PARSER: 'SmeParser',
+            KEY_BASE_URL: 'http://www.sme.sk',
+            KEY_NAME: 'Sme',
         },
         'pravda': {
-            'rss_url': 'https://spravy.pravda.sk/rss/xml/',
-            'parser': 'PravdaParser',
-            'base_url': 'http://www.pravda.sk',
-            'name': 'Pravda',
+            KEY_RSS_URL: 'https://spravy.pravda.sk/rss/xml/',
+            KEY_PARSER: 'PravdaParser',
+            KEY_BASE_URL: 'http://www.pravda.sk',
+            KEY_NAME: 'Pravda',
         },
         'aktuality': {
-            'rss_url': 'https://www.aktuality.sk/rss/',
-            'parser': 'AktualityParser',
-            'base_url': 'https://www.aktuality.sk',
-            'name': 'Aktuality',
+            KEY_RSS_URL: 'https://www.aktuality.sk/rss/',
+            KEY_PARSER: 'AktualityParser',
+            KEY_BASE_URL: 'https://www.aktuality.sk',
+            KEY_NAME: 'Aktuality',
         }
     }
 

@@ -77,7 +77,7 @@ class ParserFactory(object):
     def get_parsers(sources: List[SourceSite]) -> Dict[SourceSite, AbstractRssParser]:
         res = {}
         for source in sources:
-            parser_class = ParserFactory.get_parser_class(Sources.FEEDS[source.machine_name]['parser'])
+            parser_class = ParserFactory.get_parser_class(Sources.FEEDS[source.machine_name][Sources.KEY_PARSER])
             res[source] = parser_class(source)
         return res
 
@@ -89,7 +89,8 @@ class ParserFactory(object):
 if __name__ == '__main__':
     _sources = []
     for _source, _data in Sources.FEEDS.items():
-        _sources.append(SourceSite(_source, _data.get('name', ''), _data['rss_url'], _data.get('base_url', '')))
+        _sources.append(
+            SourceSite(_source, _data.get(Sources.KEY_NAME, ''), _data[Sources.KEY_RSS_URL], _data.get(Sources.KEY_BASE_URL, '')))
 
     _parsers = ParserFactory.get_parsers(_sources)
     for _s, _parser in _parsers.items():

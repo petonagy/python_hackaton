@@ -23,11 +23,13 @@ class Parser(object):
 if __name__ == '__main__':
     sources = []
     for source, data in Sources.FEEDS.items():
-        sources.append(SourceSite(source, data.get('name', ''), data['rss_url'], data.get('base_url', '')))
+        sources.append(SourceSite(source, data.get(Sources.KEY_NAME, ''), data[Sources.KEY_RSS_URL], data.get(Sources.KEY_BASE_URL, '')))
 
     parsers = ParserFactory.get_parsers(sources)
 
     for source, parser in parsers.items():
-        html_parser = Parser(parser.parse()[0])
-        print(html_parser.get_keywords())
+        article = next(iter(parser.parse(), []), None)
+        if article is not None:
+            html_parser = Parser()
+            print(html_parser.get_keywords())
 

@@ -18,6 +18,10 @@ class MetaArticle(object):
         self.body = body
         self.source = source
 
+    def __repr__(self):
+        return 'Title: %s\nUrl: %s\nKeywords: %s\nPerex: %s\nBody: %s\nSource: %s' \
+               % (self.title, self.url, self.keywords, self.perex, self.body, self.source.name)
+
 
 class MetaArticleFactory(object):
     @staticmethod
