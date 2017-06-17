@@ -19,6 +19,8 @@ if __name__ == '__main__':
     col = Collector(sources)
     entries = col.collect()
 
+    pprint(entries)
+
     analyzer = Analyzer(entries)
     pprint(analyzer.get_keywords_count())
 
