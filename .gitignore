@@ -96,6 +96,6 @@ python_hackathon
 # Rope project settings
 .ropeproject
 
-# PyCharm
-.idea
+# IDEs
+/.idea
 
