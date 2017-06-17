@@ -1,9 +1,10 @@
 from modules.datamodel import MetaArticle
 from typing import List, Dict
+from modules.config import SourceSite
 
 
 class Analyzer(object):
-    def __init__(self, feeds: Dict[List[MetaArticle]]):
+    def __init__(self, feeds: Dict[SourceSite, List[MetaArticle]]):
         self.feeds = feeds
 
     def get_keywords_count(self) -> dict:
@@ -45,6 +46,8 @@ class Analyzer(object):
             }
         }
         """
-        min_number_sources = max(len(self.feeds) / 2, 2)
-
+        # min_number_sources = max(len(self.feeds) / 2, 2)
         pass
+
+
+# if __name__ == '__main__':
