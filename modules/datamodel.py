@@ -39,5 +39,6 @@ class MetaArticleFactory(object):
             a.url,
             a.keywords,
             StringUtils.to_low_encoded_list(a.perex),
-            a.body
+            a.body,
+            a.source
         )
