@@ -1,7 +1,7 @@
 import importlib
 from abc import ABCMeta
 from pprint import pprint
-from typing import List
+from typing import List, Dict
 
 import feedparser
 
@@ -57,11 +57,11 @@ class PravdaParser(AbstractRssParser):
 
 class ParserFactory(object):
     @staticmethod
-    def get_parsers(sources: List[SourceSite]) -> List[AbstractRssParser]:
-        res = []
+    def get_parsers(sources: List[SourceSite]) -> Dict[SourceSite, AbstractRssParser]:
+        res = {}
         for source in sources:
             parser_class = ParserFactory.get_parser_class(Sources.FEEDS[source.machine_name]['parser'])
-            res.append(parser_class(source))
+            res[source] = parser_class(source)
         return res
 
     @classmethod

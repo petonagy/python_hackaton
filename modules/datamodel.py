@@ -1,7 +1,21 @@
-from typing import List
+from typing import List, Dict
 
 from modules.rss_model import RssArticle
 from modules.utils import StringUtils
+from modules.config import SourceSite
+from modules.rss import ParserFactory
+
+
+class Collector(object):
+    def __init__(self, sources: List[SourceSite]):
+        self.sources = sources
+        self.parsers = ParserFactory.get_parsers(self.sources)
+
+    def collect(self) -> Dict[SourceSite, List[MetaArticle]]:
+        res = {}
+        for source, parser in self.parsers.items():
+            pass
+        return res
 
 
 class MetaArticle(object):
