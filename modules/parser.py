@@ -3,7 +3,7 @@ from lxml import html
 
 from modules.config import SourceSite
 from modules.rss import ParserFactory, RssArticle, Sources
-from modules.utils import StringUtils
+from modules.utils import ListUtils
 
 
 class Parser(object):
@@ -15,9 +15,9 @@ class Parser(object):
 
     def get_keywords(self) -> list:
         tree = html.fromstring(self.get_document())
-        keywords = tree.xpath('/html/head/meta[@name="keywords"]/@content')
+        keywords = tree.xpath('/html/head/meta[@name="keywords"]/@content')[0].split(', ')
 
-        return StringUtils.to_low_encoded_list(keywords)
+        return ListUtils.to_low_encoded_list(keywords)
 
 
 if __name__ == '__main__':
