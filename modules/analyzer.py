@@ -9,6 +9,7 @@ class Analyzer(object):
 
     def get_keywords_count(self) -> dict:
         """
+        Analyze keywords, their counts and occurence.
         :return: dict
          {
             "keyword": {
@@ -40,6 +41,11 @@ class Analyzer(object):
         return keywords
 
     def get_morst_relevant_data(self, keywords: Dict) -> Dict:
+        """
+        Get most relevant data based on keyword analysis and intersection of keywords
+        :param keywords: from get_keywords_count
+        :return: Dict with trending keywords, trending articles and and the best article
+        """
         most_sources_keywords = {}
 
         max_sources = 0
@@ -72,20 +78,3 @@ class Analyzer(object):
             "trending_articles": trending_articles,
             "best_article": best_article
         }
-
-    def get_articles_score(self, keywords: dict) -> dict:
-        """
-        :param keywords:
-        :return:
-        {
-            "keyword": {
-                "count": x,
-                "feeds_count": y
-            }
-        }
-        """
-        # min_number_sources = max(len(self.feeds) / 2, 2)
-        pass
-
-
-# if __name__ == '__main__':

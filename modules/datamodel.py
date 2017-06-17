@@ -13,13 +13,14 @@ class MetaArticle(object):
     """ Meta representation of an article, in which all key fields are parsed to lowercase strings without accents. """
 
     def __init__(self, title: List[str], url: str, keywords: List[str], perex: List[str], body: str,
-                 source: SourceSite):
+                 source: SourceSite, orginal: RssArticle):
         self.title = title
         self.url = url
         self.keywords = keywords
         self.perex = perex
         self.body = body
         self.source = source
+        self.orginal = orginal
 
     def __repr__(self):
         return 'Title: %s\nUrl: %s\nKeywords: %s\nPerex: %s\nBody: %s\nSource: %s' \
@@ -35,7 +36,8 @@ class MetaArticleFactory(object):
             keywords=StringUtils.remove_stopwords(ListUtils.to_low_encoded_list(a.keywords)),
             perex=StringUtils.remove_stopwords(StringUtils.to_low_encoded_list(a.perex)),
             body=a.body,
-            source=a.source
+            source=a.source,
+            orginal=a
         )
 
 
