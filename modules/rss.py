@@ -4,7 +4,7 @@ from typing import List
 
 import feedparser
 
-from modules.config import RssSources
+from modules.config import Sources
 
 
 class RssArticle(object):
@@ -64,7 +64,7 @@ class ParserFactory(object):
     @staticmethod
     def get_parsers() -> List[AbstractRssParser]:
         res = []
-        for source, data in RssSources.FEEDS.items():
+        for source, data in Sources.FEEDS.items():
             parser_class = getattr(__import__('rss'), data['parser'])
             res.append(parser_class(data['url']))
         return res

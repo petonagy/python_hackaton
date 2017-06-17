@@ -1,7 +1,7 @@
 import requests
 from lxml import html
 
-from modules.rss import RssArticle, RssSources, SmeParser
+from modules.rss import RssArticle, Sources, SmeParser
 from modules.utils import StringUtils
 
 
@@ -20,7 +20,7 @@ class Parser(object):
 
 
 if __name__ == '__main__':
-    sme_parser = SmeParser(RssSources.FEEDS['sme']['url'])
+    sme_parser = SmeParser(Sources.FEEDS['sme']['url'])
     parser = Parser(sme_parser.parse()[0])
     print(parser.get_keywords())
 
