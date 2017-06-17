@@ -1,7 +1,10 @@
 from typing import Set
 
+from pkg_resources import resource_filename
 from unidecode import unidecode
-import unittest
+
+from resources import resources
+
 
 class StopWords(object):
     _words = None
@@ -21,22 +24,11 @@ class StopWords(object):
 
     @classmethod
     def _load(cls):
-        with open('../resources/stopwords1.txt', 'r', encoding='utf8') as f:
+        with open(resource_filename(resources.Resources.__module__, 'stopwords1.txt'), 'r', encoding='utf8') as f:
             words_raw = f.readlines()
             cls._words = {word.strip() for word in words_raw}
-        with open('../resources/stopwords2.txt', 'r', encoding='utf8') as f:
+        with open(resource_filename(resources.Resources.__module__, 'stopwords2.txt'), 'r', encoding='utf8') as f:
             words_raw = f.readlines()
             _words_2 = {word.strip() for word in words_raw}
         cls._words = cls._words.union(_words_2)
         cls._decoded_words = {unidecode(word) for word in cls._words}
-
-
-if __name__ == '__main__':
-    # print(StopWords.get_words())
-    # print(StopWords.get_decoded_words())
-    unittest.main()
-
-
-class StopWordsTest(unittest.TestCase):
-    def stopwords_test(self):
-        self.assertIn('túto', StopWords.get_words())
