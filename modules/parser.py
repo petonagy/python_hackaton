@@ -1,9 +1,6 @@
 import requests
 from lxml import html
-from modules.rss import RssArticle
-from modules.rss import SmeParser
-from modules.rss import RssSources
-
+from modules.rss import RssArticle, SmeParser, RssSources
 from modules.utils import StringUtils
 
 
