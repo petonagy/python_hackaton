@@ -3,17 +3,22 @@ from pprint import pprint
 from modules.config import SourceSite, Sources
 from modules.rss import ParserFactory
 from modules.datamodel import Collector
+from modules.analyzer import Analyzer
 
 if __name__ == '__main__':
     sources = []
     for source, data in Sources.FEEDS.items():
-        sources.append(SourceSite(source, data.get(Sources.KEY_NAME, ''), data[Sources.KEY_RSS_URL], data.get(Sources.KEY_BASE_URL, '')))
+        sources.append(SourceSite(source, data.get('name', ''), data['rss_url'], data.get('base_url', '')))
 
-    pprint(sources)
+    # pprint(sources)
 
     parsers = ParserFactory.get_parsers(sources)
 
-    pprint(parsers)
+    # pprint(parsers)
 
     col = Collector(sources)
-    pprint(col.collect())
+    entries = col.collect()
+
+    analyzer = Analyzer(entries)
+    pprint(analyzer.get_keywords_count())
+
