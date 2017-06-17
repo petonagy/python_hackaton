@@ -1,34 +1,42 @@
 from typing import Set
-from unidecode import unidecode
 
+from unidecode import unidecode
+import unittest
 
 class StopWords(object):
-    def __init__(self):
-        self._words = set()
-        self._decoded_words = set()
-        self._load()
+    _words = None
+    _decoded_words = None
 
-    @property
-    def words(self) -> Set[str]:
-        return self._words
+    @classmethod
+    def get_words(cls) -> Set[str]:
+        if cls._words is None or cls._words is None:
+            cls._load()
+        return set(cls._words)
 
-    def decoded_words(self) -> Set[str]:
-        return self._decoded_words
+    @classmethod
+    def get_decoded_words(cls) -> Set[str]:
+        if cls._words is None or cls._words is None:
+            cls._load()
+        return set(cls._decoded_words)
 
-    def _load(self):
+    @classmethod
+    def _load(cls):
         with open('../resources/stopwords1.txt', 'r', encoding='utf8') as f:
             words_raw = f.readlines()
-            self._words = {word.strip() for word in words_raw}
+            cls._words = {word.strip() for word in words_raw}
         with open('../resources/stopwords2.txt', 'r', encoding='utf8') as f:
             words_raw = f.readlines()
             _words_2 = {word.strip() for word in words_raw}
-        self._words = self._words.union(_words_2)
-        self._decoded_words = {unidecode(word) for word in self._words}
+        cls._words = cls._words.union(_words_2)
+        cls._decoded_words = {unidecode(word) for word in cls._words}
 
 
 if __name__ == '__main__':
-    t_sw = StopWords()
-    t_words = t_sw.words
-    print(t_words)
-    print(t_sw.decoded_words())
+    # print(StopWords.get_words())
+    # print(StopWords.get_decoded_words())
+    unittest.main()
 
+
+class StopWordsTest(unittest.TestCase):
+    def stopwords_test(self):
+        self.assertIn('túto', StopWords.get_words())

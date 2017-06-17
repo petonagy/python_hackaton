@@ -29,12 +29,12 @@ class MetaArticleFactory(object):
     @staticmethod
     def from_rss_article(a: RssArticle) -> MetaArticle:
         return MetaArticle(
-            StringUtils.to_low_encoded_list(a.title),
-            a.url,
-            ListUtils.to_low_encoded_list(a.keywords),
-            StringUtils.to_low_encoded_list(a.perex),
-            a.body,
-            a.source
+            title=StringUtils.remove_stopwords(StringUtils.to_low_encoded_list(a.title)),
+            url=a.url,
+            keywords=StringUtils.remove_stopwords(ListUtils.to_low_encoded_list(a.keywords)),
+            perex=StringUtils.remove_stopwords(StringUtils.to_low_encoded_list(a.perex)),
+            body=a.body,
+            source=a.source
         )
 
 
