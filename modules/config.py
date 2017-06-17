@@ -11,6 +11,12 @@ class Sources(object):
             'parser': 'PravdaParser',
             'base_url': 'http://www.pravda.sk',
             'name': 'Pravda',
+        },
+        'aktuality': {
+            'url': 'https://www.aktuality.sk/rss/',
+            'parser': 'AktualityParser',
+            'base_url': 'https://www.aktuality.sk',
+            'name': 'Aktuality',
         }
     }
 
