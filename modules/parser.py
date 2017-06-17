@@ -28,8 +28,8 @@ if __name__ == '__main__':
     parsers = ParserFactory.get_parsers(sources)
 
     for source, parser in parsers.items():
-        article = next(iter(parser.parse(), []), None)
+        article = next(iter(parser.parse() or []), None)
         if article is not None:
-            html_parser = Parser()
+            html_parser = Parser(article)
             print(html_parser.get_keywords())
 
