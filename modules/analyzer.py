@@ -21,7 +21,8 @@ class Analyzer(object):
                 for k, word in enumerate(article.keywords):
                     pass
 
-    def get__keywords_score(self, keywords: dict) -> dict:
+    @staticmethod
+    def get_keywords_score(keywords: dict) -> dict:
         """
         :param keywords:
         :return:
