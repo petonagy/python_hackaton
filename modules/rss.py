@@ -1,7 +1,10 @@
-import feedparser
-from typing import List
+from abc import ABCMeta
 from pprint import pprint
-from modules.data import RssSources
+from typing import List
+
+import feedparser
+
+from modules.config import RssSources
 
 
 class RssArticle(object):
@@ -17,7 +20,12 @@ class RssArticle(object):
                % (self.title, self.url, self.keywords, self.perex, self.body)
 
 
-class SmeParser(object):
+class AbstractRssParser(metaclass=ABCMeta):
+    def parse(self) -> List[RssArticle]:
+        pass
+
+
+class SmeParser(AbstractRssParser):
     def __init__(self, url: str):
         self.url = url
 
@@ -34,7 +42,7 @@ class SmeParser(object):
         return res
 
 
-class PravdaParser(object):
+class PravdaParser(AbstractRssParser):
     def __init__(self, url: str):
         self.url = url
 
@@ -52,9 +60,17 @@ class PravdaParser(object):
         return res
 
 
-if __name__ == '__main__':
-    # parserSme = SmeParser(RssSources.FEEDS['sme'])
-    # pprint(parserSme.parse())
+class ParserFactory(object):
+    @staticmethod
+    def get_parsers() -> List[AbstractRssParser]:
+        res = []
+        for source, data in RssSources.FEEDS.items():
+            parser_class = getattr(__import__('rss'), data['parser'])
+            res.append(parser_class(data['url']))
+        return res
 
-    parserPravda = PravdaParser(RssSources.FEEDS['pravda'])
-    pprint(parserPravda.parse())
+
+if __name__ == '__main__':
+    parsers = ParserFactory.get_parsers()
+    for parser in parsers:
+        pprint(parser.parse())

@@ -1,4 +1,5 @@
 from typing import List
+
 from modules.rss import RssArticle
 from modules.utils import StringUtils
 
