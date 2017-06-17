@@ -6,6 +6,7 @@ from modules.rss_model import RssArticle
 from modules.utils import StringUtils
 from modules.utils import ListUtils
 from modules.parser import Parser
+from modules.parser import MyThread
 
 
 class MetaArticle(object):
@@ -45,12 +46,36 @@ class Collector(object):
 
     def collect(self) -> Dict[SourceSite, List[MetaArticle]]:
         res = {}
+        threads = []
+
         for source, parser in self.parsers.items():
             articles = []
-            for rss_article in parser.parse():
-                meta_article = MetaArticleFactory.from_rss_article(rss_article)
+            keywords = []
+
+            parsed_articles = parser.parse()
+
+            for rss_article in parsed_articles:
                 html_parser = Parser(rss_article)
-                meta_article.keywords += html_parser.get_keywords()
+
+                t = MyThread(html_parser)
+                threads.append(t)
+                t.start()
+
+            for t in threads:
+                t.join()
+
+            for t in threads:
+                # print(t.result)
+                keywords.append(t.result)
+
+            for i, rss_article in enumerate(parsed_articles):
+                meta_article = MetaArticleFactory.from_rss_article(rss_article)
+
+                # meta_article.keywords += html_parser.get_keywords()
+                meta_article.keywords += keywords[i]
+                # print(keywords[i])
                 articles.append(meta_article)
             res[source] = articles
+            # print(res)
+
         return res
