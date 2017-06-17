@@ -51,13 +51,14 @@ class Collector(object):
         for source, parser in self.parsers.items():
             articles = []
             keywords = []
+            rss = []
 
             parsed_articles = parser.parse()
 
             # Start new parser for each Parser
             for rss_article in parsed_articles:
                 html_parser = Parser(rss_article)
-                t = MyThread(html_parser)
+                t = MyThread(html_parser, rss_article)
                 threads.append(t)
                 t.start()
 
@@ -68,12 +69,19 @@ class Collector(object):
             # Get results from threads
             for t in threads:
                 keywords.append(t.result)
+                rss.append(t.rss)
+
 
             for i, rss_article in enumerate(parsed_articles):
                 meta_article = MetaArticleFactory.from_rss_article(rss_article)
 
-                meta_article.keywords += keywords[i]
+                for i, rs in enumerate(rss):
+                        if rs == rss_article:
+                            meta_article.keywords += keywords[i]
+
                 articles.append(meta_article)
+                # print(meta_article)
+                # print('\n')
             res[source] = articles
 
         return res
