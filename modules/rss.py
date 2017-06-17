@@ -1,36 +1,31 @@
+import importlib
 from abc import ABCMeta
 from pprint import pprint
 from typing import List
 
 import feedparser
 
-from modules.config import Sources
-
-
-class RssArticle(object):
-    def __init__(self, title: str, url: str, keywords: List[str], perex: str, body: str):
-        self.title = title
-        self.url = url
-        self.keywords = keywords
-        self.perex = perex
-        self.body = body
-
-    def __repr__(self):
-        return 'Title: %s\nUrl: %s\nKeywords: %s\nPerex: %s\nBody: %s\n' \
-               % (self.title, self.url, self.keywords, self.perex, self.body)
+from modules.config import SourceSite, Sources
+from modules.rss_model import RssArticle
 
 
 class AbstractRssParser(metaclass=ABCMeta):
+    def __init__(self, source: SourceSite):
+        self.source = source
+
     def parse(self) -> List[RssArticle]:
         pass
 
+    def __repr__(self):
+        return 'RSS Parser for %s' % self.source.name
+
 
 class SmeParser(AbstractRssParser):
-    def __init__(self, url: str):
-        self.url = url
+    def __init__(self, source: SourceSite):
+        super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.url)
+        doc = feedparser.parse(self.source.url)
         entries = doc['entries']
         res = []
         for entry in entries:
@@ -38,16 +33,16 @@ class SmeParser(AbstractRssParser):
             url = entry.get('link', '')
             keywords = entry.get('tags', [])
             perex = entry.get('summary', '')
-            res.append(RssArticle(title, url, keywords, perex, ''))
+            res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
 
 
 class PravdaParser(AbstractRssParser):
-    def __init__(self, url: str):
-        self.url = url
+    def __init__(self, source: SourceSite):
+        super().__init__(source)
 
     def parse(self) -> List[RssArticle]:
-        doc = feedparser.parse(self.url)
+        doc = feedparser.parse(self.source.url)
         entries = doc['entries']
         res = []
         for entry in entries:
@@ -56,18 +51,22 @@ class PravdaParser(AbstractRssParser):
             url = entry.get('link', '')
             keywords = entry.get('keywords', [])
             perex = entry.get('summary', '')
-            res.append(RssArticle(title, url, keywords, perex, ''))
+            res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
 
 
 class ParserFactory(object):
     @staticmethod
-    def get_parsers() -> List[AbstractRssParser]:
+    def get_parsers(sources: List[SourceSite]) -> List[AbstractRssParser]:
         res = []
-        for source, data in Sources.FEEDS.items():
-            parser_class = getattr(__import__('rss'), data['parser'])
-            res.append(parser_class(data['url']))
+        for source in sources:
+            parser_class = ParserFactory.get_parser_class(Sources.FEEDS[source.machine_name]['parser'])
+            res.append(parser_class(source))
         return res
+
+    @classmethod
+    def get_parser_class(cls, name: str):
+        return getattr(importlib.import_module(cls.__module__), name)
 
 
 if __name__ == '__main__':

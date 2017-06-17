@@ -13,3 +13,13 @@ class Sources(object):
             'name': 'Pravda',
         }
     }
+
+
+class SourceSite(object):
+    def __init__(self, machine_name: str, name: str, url: str):
+        self.machine_name = machine_name
+        self.name = name
+        self.url = url
+
+    def __repr__(self):
+        return '%s (%s) @ %s' % (self.name, self.machine_name, self.url)
