@@ -34,6 +34,27 @@ class SmeParser(object):
         return res
 
 
+class PravdaParser(object):
+    def __init__(self, url: str):
+        self.url = url
+
+    def parse(self) -> List[RssArticle]:
+        doc = feedparser.parse(self.url)
+        entries = doc['entries']
+        res = []
+        for entry in entries:
+            print(entry)
+            title = entry.get('title', '')
+            url = entry.get('link', '')
+            keywords = entry.get('keywords', [])
+            perex = entry.get('summary', '')
+            res.append(RssArticle(title, url, keywords, perex, ''))
+        return res
+
+
 if __name__ == '__main__':
-    parser = SmeParser(RssSources.FEEDS['sme'])
-    pprint(parser.parse())
+    # parserSme = SmeParser(RssSources.FEEDS['sme'])
+    # pprint(parserSme.parse())
+
+    parserPravda = PravdaParser(RssSources.FEEDS['pravda'])
+    pprint(parserPravda.parse())
