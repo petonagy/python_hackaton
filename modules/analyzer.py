@@ -27,7 +27,11 @@ class Analyzer(object):
                     if word in keywords:
                         keywords[word]['count'] += 1
                     else:
-                        keywords[word]['count'] = 1
+                        keywords[word] = {
+                            'count': 1,
+                            'sources': [],
+                            'positions': []
+                        }
 
                     if article.source not in keywords[word]['sources']:
                         keywords[word]['sources'].append(article.source)
