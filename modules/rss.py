@@ -3,6 +3,7 @@ import ssl
 from abc import ABC, abstractmethod
 from pprint import pprint
 from typing import Dict, List
+from bs4 import BeautifulSoup
 
 import feedparser
 
@@ -70,7 +71,7 @@ class AktualityParser(AbstractRssParser):
             title = entry.get('title', '')
             url = entry.get('link', '')
             keywords = entry.get('keywords', [])
-            perex = entry.get('description', '')
+            perex = BeautifulSoup(entry.get('description', '')).text.strip()
             res.append(RssArticle(title, url, keywords, perex, '', self.source))
         return res
 
