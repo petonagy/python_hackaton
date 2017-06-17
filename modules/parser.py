@@ -13,6 +13,7 @@ class MyThread(threading.Thread):
         self.obj = obj
         self.result = None
 
+    # Run a thread
     def run(self):
         self.result = self.obj.get_keywords()
         return
