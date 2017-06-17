@@ -22,7 +22,7 @@ class Parser(object):
 
 
 if __name__ == '__main__':
-    parser = SmeParser(RssSources.FEEDS['sme'])
-    parser = Parser(SmeParser.parse()[0])
+    sme_parser = SmeParser(RssSources.FEEDS['sme'])
+    parser = Parser(sme_parser.parse()[0])
     print(parser.get_keywords())
 
