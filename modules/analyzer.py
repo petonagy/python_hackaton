@@ -1,11 +1,12 @@
 from modules.datamodel import MetaArticle
 from typing import List, Dict
 from modules.config import SourceSite
-
+from collections import defaultdict
 
 class Analyzer(object):
     def __init__(self, feeds: Dict[SourceSite, List[MetaArticle]]):
         self.feeds = feeds
+        self.trending_articles_count = 3
 
     def get_keywords_count(self) -> dict:
         """
@@ -58,20 +59,43 @@ class Analyzer(object):
 
         trending_keywords = most_sources_keywords.keys()
 
-        trending_articles = []
+        articles_of_interest = []
         for word, keyword in most_sources_keywords.items():
             for position in keyword['positions']:
-                trending_articles.append(self.feeds[position[0]][position[1]])
-        trending_articles = set(list(trending_articles))
+                articles_of_interest.append(self.feeds[position[0]][position[1]])
+        articles_of_interest = set(list(articles_of_interest))
 
         max_intersect = 0
-        best_article = None
 
-        for article in trending_articles:
+        # Save articles keyed by number of intersections between article
+        # keywords and trending keywords.
+        articles_by_keywords_intersect = defaultdict(list)
+        for article in articles_of_interest:
             intersect = len(set(article.keywords).intersection(trending_keywords))
             if intersect > max_intersect:
                 max_intersect = intersect
-                best_article = article
+
+            articles_by_keywords_intersect[intersect].append(article)
+
+        # Best article is simply the first one from the max intersect ones.
+        best_article = articles_by_keywords_intersect[max_intersect][0]
+
+        # Get remaining max intersect ones, then get remaining number of
+        # less interesting ones.
+        trending_articles = []
+        trending_articles.extend(articles_by_keywords_intersect[max_intersect][1:])
+
+        current_intersect = max_intersect - 1
+        while (current_intersect > 0 and len(trending_articles) < self.trending_articles_count):
+            articles_needed = self.trending_articles_count - len(trending_articles)
+            current_intersect_elements = len(articles_by_keywords_intersect[current_intersect])
+            if current_intersect_elements >= articles_needed:
+                index = articles_needed
+            else:
+                index = current_intersect_elements
+
+            trending_articles.extend(articles_by_keywords_intersect[current_intersect][0:index])
+            current_intersect -= 1
 
         return {
             "trending_keywords": trending_keywords,
