@@ -1,7 +1,7 @@
 # What is Happening Today?
 
-Hackathon attempt to analyse some of the online Slovak news sites to get
-hottest current articles and keywords.
+Hackathon ([Python Hackathon Engeto + Kiwi.com](https://www.facebook.com/events/1838098403073558))
+attempt to analyse Slovak news sites to get hottest current articles and keywords.
 
 ## Why?
 
@@ -16,14 +16,14 @@ occurrences and source cross-posting.
 What's worth to mention:
 
 * It took super-long to run the script, so parser runs in threads
-* Very nice object abstraction considering limited time setting
-* Slack integration
+* We managed to keep nice object abstraction considering hackathon limited time setting
+* Slack integration included
 
 _disclaimer: none of us had any substantial Python or Data Science experience
 at the point of writing this code_
 
 ## Example
 
-One gif is worth more than any words...
+See it in action:
 
 ![](http://res.cloudinary.com/m1n0/image/upload/v1511222339/wht_leqq0m.gif)
