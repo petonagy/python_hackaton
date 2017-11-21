@@ -27,3 +27,10 @@ at the point of writing this code_
 See it in action:
 
 ![](http://res.cloudinary.com/m1n0/image/upload/v1511222339/wht_leqq0m.gif)
+
+
+## Authors:
+
+* David Lukac [https://github.com/davidlukac](https://github.com/davidlukac)
+* Milan Lukac [https://github.com/m1n0](https://github.com/m1n0)
+* Peter Nagy [https://github.com/petonagy](https://github.com/petonagy)
